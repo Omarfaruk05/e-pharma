@@ -1,9 +1,9 @@
 import { Model, Types } from "mongoose";
-import { ICow } from "../cow/cow.interface";
+import { IHome } from "../house/house.interface";
 import { IUser, IUserResponse } from "../user/user.interface";
 
 export type IOrder = {
-  cow: Types.ObjectId | ICow;
+  cow: Types.ObjectId | IHome;
   buyer: Types.ObjectId | IUser;
 };
 

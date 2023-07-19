@@ -1,13 +1,13 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { User } from "../user/user.model";
-import { ICow, ICowFilters } from "./cow.interface";
-import { Cow } from "./cow.model";
-import { cowSearchableFields } from "./cow.constant";
+import { cowSearchableFields } from "./house.constant";
 import { SortOrder } from "mongoose";
+import { IHome, IHouseFilters } from "./house.interface";
+import { House } from "./house.model";
 
 // creat cow service
-const createCowService = async (cowData: ICow): Promise<ICow> => {
+const createCowService = async (cowData: IHome): Promise<IHome> => {
   const isExist = await User.findById(cowData.seller);
   if (!isExist) {
     throw new ApiError(
@@ -15,13 +15,13 @@ const createCowService = async (cowData: ICow): Promise<ICow> => {
       "Please give me seller id as seller."
     );
   }
-  const result = await Cow.create(cowData);
+  const result = await House.create(cowData);
 
   return result;
 };
 
 // get all cow service
-const getAllCowsService = async (filters: ICowFilters): Promise<ICow[]> => {
+const getAllCowsService = async (filters: IHouseFilters): Promise<IHome[]> => {
   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
 
   const andConditions = [];

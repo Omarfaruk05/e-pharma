@@ -1,34 +1,29 @@
-import { Model, StringSchemaDefinition } from "mongoose";
-
-export type UserName = {
-  firstName: string;
-  lastName: string;
-};
+import { Model, StringSchemaDefinition, Types } from "mongoose";
+import { IHome } from "../house/house.interface";
 
 export type IUser = {
+  fullName: string;
+  role?: "House Owner" | "House Renter";
   phoneNumber: string;
-  role: "seller" | "buyer";
+  email: string;
+  house: Types.ObjectId | IHome;
   password: string;
-  name: UserName;
-  address: string;
-  budget: number;
-  income: number;
 };
 
 export type IUserResponse = {
+  _id?: string;
+  fullName: string;
+  role: "House Owner" | "House Renter";
   phoneNumber: string;
-  role: "seller" | "buyer";
+  email: string;
+  house: Types.ObjectId | IHome;
   password?: string;
-  name: UserName;
-  address: string;
-  budget: number;
-  income: number;
 };
 
 export type UserModel = Model<IUser, Record<string, unknown>>;
 
 export type ILoginUser = {
-  phoneNumber: string;
+  email: string;
   password: string;
 };
 

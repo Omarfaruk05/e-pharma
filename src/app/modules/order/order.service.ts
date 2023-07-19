@@ -4,7 +4,7 @@ import { User } from "../user/user.model";
 import { IOrder } from "./order.interface";
 import { Order } from "./order.model";
 import mongoose from "mongoose";
-import { Cow } from "../cow/cow.model";
+import { Cow } from "../house/house.model";
 
 const createOrderService = async (
   orderData: IOrder,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { breed, category, label, location } from "./cow.constant";
+import { breed, category, label, location } from "./house.constant";
 
 const createCowZodSchema = z.object({
   body: z.object({

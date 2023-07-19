@@ -2,48 +2,40 @@ import { Schema, model } from "mongoose";
 import { IUser, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../../config";
+import { role } from "./user.constant";
 
 const userSchema = new Schema<IUser, UserModel>(
   {
+    fullName: {
+      type: String,
+      required: true,
+    },
     phoneNumber: {
       type: String,
       required: true,
     },
-    role: {
+    email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
     },
-    name: {
-      required: true,
-      type: {
-        firstName: {
-          type: String,
-          required: true,
-        },
-        lastName: {
-          type: String,
-          required: true,
-        },
-      },
-    },
-    address: {
+    role: {
       type: String,
-      required: true,
+      enum: role,
+      default: "House Renter",
     },
-    budget: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    income: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
+    house: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "House",
+        default: [],
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

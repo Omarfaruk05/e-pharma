@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
-import { CowService } from "./cow.service";
+import { CowService } from "./house.service";
 import ApiError from "../../../errors/ApiError";
-import { ICow } from "./cow.interface";
-import { cowFilterableFields } from "./cow.constant";
+import { ICow } from "./house.interface";
+import { cowFilterableFields } from "./house.constant";
 import pick from "../../../shared/pick";
 
 // creat cow controller
