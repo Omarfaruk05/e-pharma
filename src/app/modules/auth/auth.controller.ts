@@ -5,7 +5,7 @@ import { ILoginUserResponse, IUserResponse } from "../user/user.interface";
 import httpStatus from "http-status";
 import { AuthService } from "./auth.service";
 import config from "../../../config";
-import { IRefreshTokenResponse } from "../admin/admin.interfece";
+import { IRefreshTokenResponse } from "./auth.interface";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const { ...userData } = req.body;
@@ -25,6 +25,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUserService(loginData);
 
   const { refreshToken, ...others } = result;
+  const ame = "faruk";
+  console.log(ame);
 
   // set refresh token into cookie
   const cookieOptions = {
