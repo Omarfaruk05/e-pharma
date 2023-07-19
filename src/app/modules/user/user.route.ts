@@ -7,7 +7,7 @@ import { ENUM_ROLE } from "../../../enums/user";
 
 const router = express.Router();
 
-router.post("/", UserController.createUser);
+router.post("/create-user", UserController.createUser);
 
 //get all users route
 router.get("/", UserController.getAllUsers);

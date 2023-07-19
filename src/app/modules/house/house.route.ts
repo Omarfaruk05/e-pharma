@@ -9,26 +9,31 @@ const router = express.Router();
 
 // create House
 router.post(
-  "/",
+  "/create-house",
+  auth(ENUM_ROLE.OWNER),
   validateRequest(HouseValidation.createHouseZodSchema),
   HouseController.createHouse
 );
 
 // get all House
-router.get("/", HouseController.getAllHouse);
+router.get("/get-house", HouseController.getAllHouse);
 
 // get a House with id
-router.get("/:id", HouseController.getSingleHouse);
+router.get("/get-single-house/:id", HouseController.getSingleHouse);
 
 // update House
 router.patch(
-  "/:id",
-  auth(ENUM_ROLE.OWNER),
+  "/update-house/:id",
+  auth(ENUM_ROLE.OWNER, ENUM_ROLE.RENTER),
   validateRequest(HouseValidation.updateHouseZodSchema),
   HouseController.updateHouse
 );
 
 // delete House
-router.delete("/:id", auth(ENUM_ROLE.OWNER), HouseController.deleteHouse);
+router.delete(
+  "/delete-house/:id",
+  auth(ENUM_ROLE.OWNER),
+  HouseController.deleteHouse
+);
 
 export const HouseRoutes = router;

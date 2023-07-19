@@ -1,7 +1,6 @@
 import express from "express";
 import { UserRoutes } from "../modules/user/user.route";
 import { HouseRoutes } from "../modules/house/house.route";
-import { OrderRoutes } from "../modules/order/order.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 const router = express.Router();
 

@@ -8,6 +8,8 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   const userData = req.body;
   const result = await UserService.createUserService(userData);
 
+  result.password = "";
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

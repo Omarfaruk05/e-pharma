@@ -26,7 +26,7 @@ const houseSchema = new Schema<IHome, HouseModel>(
     status: {
       type: String,
       enum: ["Available", "Booked"],
-      default: "Available ",
+      default: "Available",
     },
     bookedBy: {
       type: Schema.Types.ObjectId,

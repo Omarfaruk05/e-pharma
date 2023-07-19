@@ -10,7 +10,7 @@ export type IHome = {
   bathrooms: string;
   roomSize: string;
   picture: string;
-  status: "Available " | "Booked";
+  status: "Available" | "Booked";
   bookedBy?: Types.ObjectId | IUser;
   availabilityDate: Date;
   rentPerMonth: string;

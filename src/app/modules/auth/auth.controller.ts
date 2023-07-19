@@ -7,27 +7,11 @@ import { AuthService } from "./auth.service";
 import config from "../../../config";
 import { IRefreshTokenResponse } from "./auth.interface";
 
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const { ...userData } = req.body;
-  const result = await AuthService.createUserService(userData);
-  result.password = undefined;
-
-  sendResponse<IUserResponse>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User is created successfully.",
-    data: result,
-  });
-});
-
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
   const result = await AuthService.loginUserService(loginData);
 
   const { refreshToken, ...others } = result;
-  const ame = "faruk";
-  console.log(ame);
-
   // set refresh token into cookie
   const cookieOptions = {
     secure: config.env === "production",
@@ -66,7 +50,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const AuthController = {
-  createUser,
   loginUser,
   refreshToken,
 };

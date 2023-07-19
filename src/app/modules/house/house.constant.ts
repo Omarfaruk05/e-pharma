@@ -1,11 +1,17 @@
-export const houseSearchableFields = ["name", "category", "location", "breed"];
+export const houseSearchableFields = [
+  "city",
+  "bedrooms",
+  "address",
+  "romeSize",
+  "availabilityDate",
+  "rentPerMonth",
+];
 
 export const houseFilterableFields = [
   "searchTerm",
-  "location",
-  "breed",
-  "price",
-  "category",
-  "minPrice",
-  "maxPrice",
+  "city",
+  "bedrooms",
+  "romeSize",
+  "availabilityDate",
+  "rentPerMonth",
 ];

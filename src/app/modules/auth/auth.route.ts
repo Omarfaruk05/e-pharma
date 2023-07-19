@@ -5,13 +5,6 @@ import { AuthController } from "./auth.controller";
 
 const router = express.Router();
 
-// create user route
-router.post(
-  "/signup",
-  validateRequest(AuthValidation.createUserZodSchema),
-  AuthController.createUser
-);
-
 // user login route
 router.post(
   "/login",

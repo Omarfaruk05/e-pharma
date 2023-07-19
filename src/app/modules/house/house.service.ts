@@ -3,17 +3,42 @@ import ApiError from "../../../errors/ApiError";
 import { IHome, IHouseFilters } from "./house.interface";
 import { House } from "./house.model";
 import { houseSearchableFields } from "./house.constant";
+import { User } from "../user/user.model";
+import { paginationHelpers } from "../../../helpers/paginationHelper";
+import { IPaginationOptions } from "../../../interfaces/pagination";
+import { SortOrder } from "mongoose";
+import { IGenericResponse } from "../../../interfaces/common";
 
 // creat house service
-const createHouseService = async (homeData: IHome): Promise<IHome> => {
+const createHouseService = async (
+  user: any,
+  homeData: IHome
+): Promise<IHome> => {
+  const { _id } = user;
+
+  const isHouseOwner = await User.findById(_id);
+
+  if (!isHouseOwner) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "You are not an authorized Owner."
+    );
+  }
+  homeData.owner = _id;
+  homeData.availabilityDate = new Date(homeData.availabilityDate);
   const result = await House.create(homeData);
 
   return result;
 };
 
 // get all house service
-const getAllHouseService = async (filters: IHouseFilters): Promise<IHome[]> => {
+const getAllHouseService = async (
+  filters: IHouseFilters,
+  paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<IHome[]>> => {
   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(paginationOptions);
 
   const andConditions = [];
 
@@ -51,11 +76,28 @@ const getAllHouseService = async (filters: IHouseFilters): Promise<IHome[]> => {
     });
   }
 
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await House.find(whereConditions);
+  const result = await House.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
 
-  return result;
+  const total = await House.countDocuments();
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
 };
 
 // creat single House service
