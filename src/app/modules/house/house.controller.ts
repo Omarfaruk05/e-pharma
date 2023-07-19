@@ -2,91 +2,91 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
-import { CowService } from "./house.service";
 import ApiError from "../../../errors/ApiError";
-import { ICow } from "./house.interface";
-import { cowFilterableFields } from "./house.constant";
 import pick from "../../../shared/pick";
+import { HouseService } from "./house.service";
+import { houseFilterableFields } from "./house.constant";
+import { IHome } from "./house.interface";
 
-// creat cow controller
-const createCow = catchAsync(async (req: Request, res: Response) => {
-  const { ...cowData } = req.body;
+// creat house controller
+const createHouse = catchAsync(async (req: Request, res: Response) => {
+  const { ...houseData } = req.body;
 
-  const result = await CowService.createCowService(cowData);
+  const result = await HouseService.createHouseService(houseData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cow created successfully.",
+    message: "House created successfully.",
     data: result,
   });
 });
 
-// get all cow controller
-const getAllCows = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, cowFilterableFields);
+// get all house controller
+const getAllHouse = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, houseFilterableFields);
 
-  const result = await CowService.getAllCowsService(filters);
+  const result = await HouseService.getAllHouseService(filters);
 
-  sendResponse<ICow[]>(res, {
+  sendResponse<IHome[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cows received successfully.",
+    message: "Houeses received successfully.",
 
     data: result,
   });
 });
 
-// get single cow controller
-const getSingleCow = catchAsync(async (req: Request, res: Response) => {
+// get single House controller
+const getSingleHouse = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await CowService.getSingleCowService(id);
+  const result = await HouseService.getSingleHouseService(id);
 
   if (!result) {
-    throw new ApiError(httpStatus.OK, "No cow found with this id");
+    throw new ApiError(httpStatus.OK, "No House found with this id");
   }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cow received successfully.",
+    message: "House received successfully.",
     data: result,
   });
 });
 
-// update cow controller
-const updateCow = catchAsync(async (req: Request, res: Response) => {
+// update house controller
+const updateHouse = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
   const user = req.user;
-  const result = await CowService.updateCowService(id, updatedData, user);
+  const result = await HouseService.updateHouseService(id, updatedData, user);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cow updated successfully.",
+    message: "House updated successfully.",
     data: result,
   });
 });
 
-// delete cow controller
-const deleteCow = catchAsync(async (req: Request, res: Response) => {
+// delete house controller
+const deleteHouse = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = req.user;
-  const result = await CowService.deleteCowService(id, user);
+  const result = await HouseService.deleteHouseService(id, user);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cow deleted successfully.",
+    message: "House deleted successfully.",
     data: result,
   });
 });
 
-export const CowController = {
-  createCow,
-  getAllCows,
-  getSingleCow,
-  updateCow,
-  deleteCow,
+export const HouseController = {
+  createHouse,
+  getAllHouse,
+  getSingleHouse,
+  updateHouse,
+  deleteHouse,
 };

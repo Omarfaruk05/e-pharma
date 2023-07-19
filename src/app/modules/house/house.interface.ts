@@ -2,6 +2,7 @@ import { Model, Types } from "mongoose";
 import { IUser } from "../user/user.interface";
 
 export type IHome = {
+  owner: Types.ObjectId | IUser;
   name: string;
   address: string;
   city: string;

@@ -1,34 +1,25 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { User } from "../user/user.model";
-import { cowSearchableFields } from "./house.constant";
-import { SortOrder } from "mongoose";
 import { IHome, IHouseFilters } from "./house.interface";
 import { House } from "./house.model";
+import { houseSearchableFields } from "./house.constant";
 
-// creat cow service
-const createCowService = async (cowData: IHome): Promise<IHome> => {
-  const isExist = await User.findById(cowData.seller);
-  if (!isExist) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Please give me seller id as seller."
-    );
-  }
-  const result = await House.create(cowData);
+// creat house service
+const createHouseService = async (homeData: IHome): Promise<IHome> => {
+  const result = await House.create(homeData);
 
   return result;
 };
 
-// get all cow service
-const getAllCowsService = async (filters: IHouseFilters): Promise<IHome[]> => {
+// get all house service
+const getAllHouseService = async (filters: IHouseFilters): Promise<IHome[]> => {
   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
 
   const andConditions = [];
 
   if (searchTerm) {
     andConditions.push({
-      $or: cowSearchableFields.map((field) => ({
+      $or: houseSearchableFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
           $options: "i",
@@ -62,77 +53,70 @@ const getAllCowsService = async (filters: IHouseFilters): Promise<IHome[]> => {
 
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await Cow.find(whereConditions);
+  const result = await House.find(whereConditions);
 
   return result;
 };
 
-// creat single cow service
-const getSingleCowService = async (id: string): Promise<ICow | null> => {
-  const result = await Cow.findById(id);
+// creat single House service
+const getSingleHouseService = async (id: string): Promise<IHome | null> => {
+  const result = await House.findById(id);
   if (!result) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "Sorry, There is no cow with this id."
+      "Sorry, There is no House with this id."
     );
   }
 
   return result;
 };
 
-// update cow service
-const updateCowService = async (
+// update House service
+const updateHouseService = async (
   id: string,
-  updatedData: Partial<ICow>,
+  updatedData: Partial<IHome>,
   user: any
-): Promise<ICow | null> => {
+): Promise<IHome | null> => {
   const { _id } = user;
-  const cow = await Cow.findOne({ _id: id, seller: _id });
+  const house = await House.findOne({ _id: id, owner: _id });
 
-  if (!cow) {
+  if (!house) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Can't update the cow because this is not your cow."
+      "Can't update the house because this is not your house."
     );
   }
 
-  if (updatedData.seller) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "You can't update cows seller id."
-    );
-  }
-
-  const result = await Cow.findOneAndUpdate({ _id: id }, updatedData, {
+  const result = await House.findOneAndUpdate({ _id: id }, updatedData, {
     new: true,
   });
 
   return result;
 };
 
-// delete cow service
-const deleteCowService = async (
+// delete house service
+const deleteHouseService = async (
   id: string,
   user: any
-): Promise<ICow | null> => {
+): Promise<IHome | null> => {
   const { _id } = user;
-  const cow = await Cow.findOne({ _id: id, seller: _id });
+  const house = await House.findOne({ _id: id, owner: _id });
 
-  if (!cow) {
+  if (!house) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Can't delete the cow because this is not your cow."
+      "Can't delete the house because this is not your house."
     );
   }
-  const result = await Cow.findByIdAndDelete(id);
+  const result = await House.findByIdAndDelete(id);
 
   return result;
 };
 
-export const CowService = {
-  createCowService,
-  getAllCowsService,
-  getSingleCowService,
-  updateCowService,
-  deleteCowService,
+export const HouseService = {
+  createHouseService,
+  getAllHouseService,
+  getSingleHouseService,
+  updateHouseService,
+  deleteHouseService,
 };

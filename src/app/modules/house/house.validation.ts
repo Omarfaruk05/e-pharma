@@ -1,43 +1,64 @@
 import { z } from "zod";
-import { breed, category, label, location } from "./house.constant";
 
-const createCowZodSchema = z.object({
-  body: z.object({
-    name: z.string(),
-    age: z.number({
-      required_error: "Age is required.",
-    }),
-    price: z.number({
-      required_error: "Price is required.",
-    }),
-    location: z.enum([...location] as [string, ...string[]]),
-    breed: z.enum([...breed] as [string, ...string[]]),
-    weight: z.number({
-      required_error: "Weight is required.",
-    }),
-    label: z.enum([...label] as [string, ...string[]]),
-    category: z.enum([...category] as [string, ...string[]]),
-    seller: z.string({
-      required_error: "Seller id is required.",
-    }),
+const createHouseZodSchema = z.object({
+  owner: z.union([
+    z.string({ required_error: "You have to provide a owner id." }).uuid(),
+    z.object({ _id: z.string().uuid() }),
+  ]),
+  name: z.string({ required_error: "You have to provide a house name." }),
+  address: z.string({ required_error: "You have to provide a house address." }),
+  city: z.string({ required_error: "You have to provide a house city." }),
+  bedrooms: z.string({
+    required_error: "You have to provide a house bedrooms.",
+  }),
+  bathrooms: z.string({
+    required_error: "You have to provide a house bathrooms.",
+  }),
+  roomSize: z.string({
+    required_error: "You have to provide a house room size.",
+  }),
+  picture: z.string({ required_error: "You have to provide a house picture." }),
+  status: z.enum(["Available", "Booked"]).optional(),
+  bookedBy: z
+    .union([z.string().uuid(), z.object({ _id: z.string().uuid() }).nullable()])
+    .optional(),
+  availabilityDate: z.date({
+    required_error: "You have to provide a availability date.",
+  }),
+  rentPerMonth: z.string({
+    required_error: "You have to provide a house rent perMonth.",
+  }),
+  phoneNumber: z.string({
+    required_error: "You have to provide your phone number..",
+  }),
+  description: z.string({
+    required_error: "You have to provide a house description.",
   }),
 });
 
-const updateCowZodSchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    age: z.number().optional(),
-    price: z.number().optional(),
-    location: z.enum([...location] as [string, ...string[]]).optional(),
-    breed: z.enum([...breed] as [string, ...string[]]).optional(),
-    weight: z.number().optional(),
-    label: z.enum([...label] as [string, ...string[]]).optional(),
-    category: z.enum([...category] as [string, ...string[]]).optional(),
-    seller: z.string().optional(),
-  }),
+const updateHouseZodSchema = z.object({
+  owner: z.union([
+    z.string({ required_error: "You have to provide a owner id." }).uuid(),
+    z.object({ _id: z.string().uuid() }).nullable(),
+  ]),
+  name: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  bedrooms: z.string().optional(),
+  bathrooms: z.string().optional(),
+  roomSize: z.string().optional(),
+  picture: z.string().optional(),
+  status: z.enum(["Available", "Booked"]).optional(),
+  bookedBy: z
+    .union([z.string().uuid(), z.object({ _id: z.string().uuid() }).nullable()])
+    .optional(),
+  availabilityDate: z.date().optional(),
+  rentPerMonth: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  description: z.string().optional(),
 });
 
-export const CowValidation = {
-  createCowZodSchema,
-  updateCowZodSchema,
+export const HouseValidation = {
+  createHouseZodSchema,
+  updateHouseZodSchema,
 };

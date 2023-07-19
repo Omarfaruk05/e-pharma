@@ -11,7 +11,6 @@ export type IUser = {
 };
 
 export type IUserResponse = {
-  _id?: string;
   fullName: string;
   role: "House Owner" | "House Renter";
   phoneNumber: string;

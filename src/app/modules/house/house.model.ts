@@ -1,9 +1,12 @@
 import { Schema, model } from "mongoose";
-import { breed, category, label, location } from "./house.constant";
 import { HouseModel, IHome } from "./house.interface";
 
 const houseSchema = new Schema<IHome, HouseModel>(
   {
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     name: {
       type: String,
       required: true,

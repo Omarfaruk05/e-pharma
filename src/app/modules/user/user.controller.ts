@@ -4,6 +4,18 @@ import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { UserService } from "./user.service";
 
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const userData = req.body;
+  const result = await UserService.createUserService(userData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User Created successfully.",
+    data: result,
+  });
+});
+
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllUserService();
 
@@ -31,9 +43,6 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
   const result = await UserService.updateUserService(id, updatedData);
-  if (result) {
-    result.password = undefined;
-  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -55,39 +64,10 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMyProfile = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user;
-  const result = await UserService.getMyProfileService(user);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User's information recived successfully",
-    data: result,
-  });
-});
-
-const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user;
-  const updatedData = req.body;
-  const result = await UserService.updateMyProfileService(user, updatedData);
-  if (result) {
-    result.password = undefined;
-  }
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User's information updated successfully",
-    data: result,
-  });
-});
-
 export const UserController = {
+  createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
   deleteUser,
-  getMyProfile,
-  updateMyProfile,
 };
