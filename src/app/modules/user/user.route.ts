@@ -15,14 +15,14 @@ router.get("/", UserController.getAllUsers);
 //get single user route
 router.get(
   "/:id",
-  auth(ENUM_ROLE.OWNER, ENUM_ROLE.RENTER),
+  auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
   UserController.getSingleUser
 );
 
 //update single user route
 router.patch(
   "/:id",
-  auth(ENUM_ROLE.OWNER, ENUM_ROLE.RENTER),
+  auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
   validateRequest(UserValidation.updateUserZodSchema),
   UserController.updateUser
 );
@@ -30,7 +30,7 @@ router.patch(
 // delete single user route
 router.delete(
   "/:id",
-  auth(ENUM_ROLE.OWNER, ENUM_ROLE.RENTER),
+  auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
   UserController.deleteUser
 );
 

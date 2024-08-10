@@ -14,4 +14,6 @@ export default {
     expires_in: process.env.JWT_EXPIRES_IN,
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRE_IN,
   },
+  auth_email: process.env.AUTH_EMAIL,
+  auth_password: process.env.AUTH_PASSWORD
 };

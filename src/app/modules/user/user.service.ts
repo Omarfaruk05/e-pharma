@@ -1,7 +1,17 @@
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 import { IUser, IUserResponse } from "./user.interface";
 import { User } from "./user.model";
 
 const createUserService = async (userData: IUser): Promise<IUser> => {
+
+  const isUserExist = await User.findOne({email: userData.email})
+
+  if(isUserExist){
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email is already used!")
+  }
+
+
   const result = await User.create(userData);
 
   return result;

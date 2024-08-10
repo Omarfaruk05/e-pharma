@@ -2,13 +2,13 @@ import { Model, Types } from "mongoose";
 import { ENUM_ROLE } from "../../../enums/user";
 
 export type IUser = {
-  _id: Types.ObjectId;
+  _id?: Types.ObjectId,
   name: string;
   email: string;
   password: string;
   role?: ENUM_ROLE.SUPER_ADMIN | ENUM_ROLE.ADMIN | ENUM_ROLE.USER;
-  photo: string;
-  isEmailVerified: boolean;
+  photo?: string;
+  isEmailVerified?: boolean;
 };
 
 export type IUserResponse = {

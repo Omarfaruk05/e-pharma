@@ -1,4 +1,4 @@
-## live link: [https://cow-hut-as-4.vercel.app]
+## live link:(e-pharma)[https://cow-hut-as-4.vercel.app]
 
 # Main Part
 
@@ -15,11 +15,4 @@
 - Route: [https://cow-hut-as-4.vercel.app/api/v1/users/64a2fb7f48b19f2803edf757] (PATCH) update user
 - Route: [https://cow-hut-as-4.vercel.app/api/v1/users/64a2fb7f48b19f2803edf757] (DELETE) delete user
 
-## House
-
-- Route: [https://cow-hut-as-4.vercel.app/api/v1/house/create-house] (POST)
-- Route: [https://cow-hut-as-4.vercel.app/api/v1/house/get-house] (GET) All house
-- Route: [https://cow-hut-as-4.vercel.app/api/v1/house/get-single-house/64a3031c782c207dcce3c8be] (Single GET) Single house
-- Route: [https://cow-hut-as-4.vercel.app/api/v1/house/update-house/64a3031c782c207dcce3c8be] (PATCH)
-- Route: [https://cow-hut-as-4.vercel.app/api/v1/house/delete-house/64a3031c782c207dcce3c8be] (DELETE)
-# e-pharma
+# 

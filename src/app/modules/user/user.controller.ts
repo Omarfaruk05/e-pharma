@@ -3,19 +3,33 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { UserService } from "./user.service";
+import { UserOTPVerificationService } from "../userOTPVerifiaction/userOTPVerification.service";
+import { Types } from "mongoose";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const userData = req.body;
   const result = await UserService.createUserService(userData);
 
   result.password = "";
+  
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User Created successfully.",
-    data: result,
-  });
+  if (result._id){
+    const data:{
+      _id: Types.ObjectId;
+      email: string;
+  } = {_id:result._id, email:result.email}
+    const newResult = await UserOTPVerificationService.sendOTPVerificationEmail(data)
+
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "User Created successfully.",
+      data: newResult,
+    });
+  }
+
+
 });
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
