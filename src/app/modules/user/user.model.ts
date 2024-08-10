@@ -2,40 +2,20 @@ import { Schema, model } from "mongoose";
 import { IUser, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../../config";
-import { role } from "./user.constant";
+import { ENUM_ROLE } from "../../../enums/user";
 
 const userSchema = new Schema<IUser, UserModel>(
   {
-    fullName: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     role: {
       type: String,
-      enum: role,
-      default: "House Renter",
+      enum: [ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER],
+      default:ENUM_ROLE.USER,
     },
-    house: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "House",
-        default: [],
-        required: true,
-      },
-    ],
+    photo: { type: String },
+    isEmailVerified: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -53,4 +33,5 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
+
 export const User = model<IUser, UserModel>("User", userSchema);

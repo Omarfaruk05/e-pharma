@@ -1,22 +1,23 @@
-import { Model, StringSchemaDefinition, Types } from "mongoose";
-import { IHome } from "../house/house.interface";
+import { Model, Types } from "mongoose";
+import { ENUM_ROLE } from "../../../enums/user";
 
 export type IUser = {
-  fullName: string;
-  role?: "House Owner" | "House Renter";
-  phoneNumber: string;
+  _id: Types.ObjectId;
+  name: string;
   email: string;
-  house: Types.ObjectId | IHome;
   password: string;
+  role?: ENUM_ROLE.SUPER_ADMIN | ENUM_ROLE.ADMIN | ENUM_ROLE.USER;
+  photo: string;
+  isEmailVerified: boolean;
 };
 
 export type IUserResponse = {
-  fullName: string;
-  role: "House Owner" | "House Renter";
-  phoneNumber: string;
+  name: string;
   email: string;
-  house: Types.ObjectId | IHome;
   password?: string;
+  role: ENUM_ROLE.SUPER_ADMIN | ENUM_ROLE.ADMIN | ENUM_ROLE.USER;
+  photo: string;
+  isEmailVerified: boolean;
 };
 
 export type UserModel = Model<IUser, Record<string, unknown>>;

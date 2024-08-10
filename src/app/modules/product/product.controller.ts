@@ -4,9 +4,9 @@ import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import pick from "../../../shared/pick";
-import { HouseService } from "./house.service";
-import { houseFilterableFields } from "./house.constant";
-import { IHome } from "./house.interface";
+import { HouseService } from "./product.service";
+import { houseFilterableFields } from "./product.constant";
+import { IHome } from "./product.interface";
 import { paginationFields } from "../../constants/pagination";
 
 // creat house controller

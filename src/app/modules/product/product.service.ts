@@ -1,8 +1,8 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { IHome, IHouseFilters } from "./house.interface";
-import { House } from "./house.model";
-import { houseSearchableFields } from "./house.constant";
+import { IHome, IHouseFilters } from "./product.interface";
+import { House } from "./product.model";
+import { houseSearchableFields } from "./product.constant";
 import { User } from "../user/user.model";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IPaginationOptions } from "../../../interfaces/pagination";

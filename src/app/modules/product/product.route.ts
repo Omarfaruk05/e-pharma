@@ -1,6 +1,6 @@
 import express from "express";
 import validateRequest from "../../middlewares/validateRequest";
-import { HouseController } from "./house.controller";
+import { HouseController } from "./product.controller";
 import auth from "../../middlewares/auth";
 import { ENUM_ROLE } from "../../../enums/user";
 import { HouseValidation } from "./house.validation";

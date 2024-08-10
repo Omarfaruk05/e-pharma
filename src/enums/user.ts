@@ -1,4 +1,5 @@
 export enum ENUM_ROLE {
-  OWNER = "House Owner",
-  RENTER = "House Renter",
+  SUPER_ADMIN= "super-admin",
+  ADMIN= "admin",
+  USER= "user"
 }
