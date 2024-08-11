@@ -12,6 +12,7 @@ import { jwtHelpers } from "../../../helpers/jwtHalpers";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
 import { IRefreshTokenResponse } from "./auth.interface";
+import { ENUM_ROLE } from "../../../enums/user";
 
 const loginUserService = async (
   loginData: ILoginUser
@@ -72,10 +73,14 @@ const refreshTokenService = async (
 
   let newAccessToken = "";
 
-  if (role === "House Renter" || role === "House Owner") {
+  if (
+    role === ENUM_ROLE.SUPER_ADMIN ||
+    role === ENUM_ROLE.SUPER_ADMIN ||
+    role === ENUM_ROLE.USER
+  ) {
     const isUserExist = await User.findOne(
       { _id },
-      { _id: 1, phoneNumber: 1, password: 1, role: 1 }
+      { _id: 1, password: 1, role: 1 }
     ).lean();
 
     if (!isUserExist) {

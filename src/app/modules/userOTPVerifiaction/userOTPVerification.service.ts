@@ -79,7 +79,7 @@ const verifyOTP = async ({ userId, otp }: any) => {
   await User.updateOne({ _id: userId }, { isEmailVerified: true });
   await UserOTPVerification.deleteMany({ userId });
 
-  const user = await User.findById({ _id: userId });
+  const user = await User.findById({ _id: userId }, { password: 0 });
   return user;
 };
 
