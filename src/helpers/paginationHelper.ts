@@ -28,7 +28,7 @@ const calculatePagination = (options: IOptions): IOptionsResult => {
     limit,
     skip,
     sortBy,
-    sortOrder,
+    sortOrder: sortOrder === "asc" ? 1 : -1,
   };
 };
 

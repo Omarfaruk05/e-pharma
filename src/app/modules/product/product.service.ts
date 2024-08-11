@@ -2,12 +2,12 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { IHome, IHouseFilters } from "./product.interface";
 import { House } from "./product.model";
-import { houseSearchableFields } from "./product.constant";
 import { User } from "../user/user.model";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import { SortOrder } from "mongoose";
 import { IGenericResponse } from "../../../interfaces/common";
+import { productSearchableFields } from "./product.constant";
 
 // creat house service
 const createHouseService = async (
@@ -44,7 +44,7 @@ const getAllHouseService = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: houseSearchableFields.map((field) => ({
+      $or: productSearchableFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
           $options: "i",

@@ -1,4 +1,4 @@
-export const houseSearchableFields = [
+export const productSearchableFields = [
   "city",
   "bedrooms",
   "address",
@@ -7,7 +7,7 @@ export const houseSearchableFields = [
   "rentPerMonth",
 ];
 
-export const houseFilterableFields = [
+export const productFilterableFilds = [
   "searchTerm",
   "city",
   "bedrooms",

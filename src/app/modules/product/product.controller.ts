@@ -5,9 +5,9 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import pick from "../../../shared/pick";
 import { HouseService } from "./product.service";
-import { houseFilterableFields } from "./product.constant";
 import { IHome } from "./product.interface";
 import { paginationFields } from "../../constants/pagination";
+import { productFilterableFilds } from "./product.constant";
 
 // creat house controller
 const createHouse = catchAsync(async (req: Request, res: Response) => {
@@ -27,7 +27,7 @@ const createHouse = catchAsync(async (req: Request, res: Response) => {
 
 // get all house controller
 const getAllHouse = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, houseFilterableFields);
+  const filters = pick(req.query, productFilterableFilds);
   const paginationOptions = pick(req.query, paginationFields);
 
   const result = await HouseService.getAllHouseService(

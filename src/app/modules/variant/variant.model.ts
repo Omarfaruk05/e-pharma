@@ -1,10 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { IVariant, VariantModel } from "./variant.interface";
 
 const variantSchema: Schema<IVariant> = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
+    productName: String,
+    variant: String,
+    price: Number,
+    quantity: Number,
   },
   {
     timestamps: true,
@@ -14,4 +16,4 @@ const variantSchema: Schema<IVariant> = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<IVariant ,VariantModel>("Variant", variantSchema);
+export const Variant = model<IVariant, VariantModel>("Variant", variantSchema);

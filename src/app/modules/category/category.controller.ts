@@ -4,6 +4,9 @@ import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { CategoryService } from "./category.service";
 import { Types } from "mongoose";
+import pick from "../../../shared/pick";
+import { paginationFields } from "../../constants/pagination";
+import { categoryFilterableFilds } from "./category.constant";
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
   const categoryData = req.body;
@@ -18,7 +21,12 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
-  const result = await CategoryService.getAllCategoriesService();
+  const filters = pick(req.query, categoryFilterableFilds);
+  const paginationOptions = pick(req.query, paginationFields);
+  const result = await CategoryService.getAllCategoriesService(
+    filters,
+    paginationOptions
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
