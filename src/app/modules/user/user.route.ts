@@ -10,7 +10,11 @@ const router = express.Router();
 router.post("/create-user", UserController.createUser);
 
 //get all users route
-router.get("/", UserController.getAllUsers);
+router.get(
+  "/",
+  // auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
+  UserController.getAllUsers
+);
 
 //get single user route
 router.get(

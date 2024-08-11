@@ -1,8 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { IOrder, OrderModel } from "./order.interface";
 
 const orderSchema: Schema<IOrder> = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     products: [
       {
         product: {
@@ -18,7 +22,6 @@ const orderSchema: Schema<IOrder> = new mongoose.Schema(
     shippingAddress: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ShippingAddress",
-      required: true,
     },
     orderStatus: {
       type: String,
@@ -30,7 +33,7 @@ const orderSchema: Schema<IOrder> = new mongoose.Schema(
       enum: ["Pending", "Completed", "Failed"],
       default: "Pending",
     },
-    orderDate: { type: Date, default: Date.now },
+    orderDate: { type: String, default: Date.now.toString() },
   },
   {
     timestamps: true,
@@ -40,4 +43,4 @@ const orderSchema: Schema<IOrder> = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<IOrder, OrderModel>("Order", orderSchema);
+export const Order = model<IOrder, OrderModel>("Order", orderSchema);
