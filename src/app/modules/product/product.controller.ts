@@ -2,98 +2,81 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
-import ApiError from "../../../errors/ApiError";
 import pick from "../../../shared/pick";
-import { HouseService } from "./product.service";
-import { IHome } from "./product.interface";
 import { paginationFields } from "../../constants/pagination";
+import { ProductService } from "./product.service";
 import { productFilterableFilds } from "./product.constant";
 
-// creat house controller
-const createHouse = catchAsync(async (req: Request, res: Response) => {
-  const { ...houseData } = req.body;
-  const user = req.user;
-  console.log(user);
-
-  const result = await HouseService.createHouseService(user, houseData);
+const createProduct = catchAsync(async (req: Request, res: Response) => {
+  const ProductData = req.body;
+  const result = await ProductService.createProductService(ProductData);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
-    message: "House created successfully.",
+    message: "Product created successfully.",
     data: result,
   });
 });
 
-// get all house controller
-const getAllHouse = catchAsync(async (req: Request, res: Response) => {
+const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, productFilterableFilds);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await HouseService.getAllHouseService(
+  const result = await ProductService.getAllProductsService(
     filters,
     paginationOptions
   );
 
-  sendResponse<IHome[]>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Houeses received successfully.",
-    meta: result.meta,
-    data: result.data,
-  });
-});
-
-// get single House controller
-const getSingleHouse = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const result = await HouseService.getSingleHouseService(id);
-
-  if (!result) {
-    throw new ApiError(httpStatus.OK, "No House found with this id");
-  }
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "House received successfully.",
+    message: "All Products retrieved successfully.",
     data: result,
   });
 });
 
-// update house controller
-const updateHouse = catchAsync(async (req: Request, res: Response) => {
+const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await ProductService.getSingleProductService(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Product retrieved successfully.",
+    data: result,
+  });
+});
+
+const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
-  const user = req.user;
-  const result = await HouseService.updateHouseService(id, updatedData, user);
+  const result = await ProductService.updateProductService(id, updatedData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "House updated successfully.",
+    message: "Product updated successfully.",
     data: result,
   });
 });
 
-// delete house controller
-const deleteHouse = catchAsync(async (req: Request, res: Response) => {
+const deleteProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const user = req.user;
-  const result = await HouseService.deleteHouseService(id, user);
+  const result = await ProductService.deleteProductService(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "House deleted successfully.",
+    message: "Product deleted successfully.",
     data: result,
   });
 });
 
-export const HouseController = {
-  createHouse,
-  getAllHouse,
-  getSingleHouse,
-  updateHouse,
-  deleteHouse,
+export const ProductController = {
+  createProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
 };

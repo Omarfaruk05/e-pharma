@@ -1,17 +1,3 @@
-export const productSearchableFields = [
-  "city",
-  "bedrooms",
-  "address",
-  "romeSize",
-  "availabilityDate",
-  "rentPerMonth",
-];
+export const productSearchableFields = ["name", "variants", "categories"];
 
-export const productFilterableFilds = [
-  "searchTerm",
-  "city",
-  "bedrooms",
-  "romeSize",
-  "availabilityDate",
-  "rentPerMonth",
-];
+export const productFilterableFilds = ["searchTerm", "stockStatus", "status"];

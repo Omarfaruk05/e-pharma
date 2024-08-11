@@ -1,8 +1,8 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IProduct, ProductModel } from "./product.interface";
 
-
-  const productSchema: Schema<IProduct> = new mongoose.Schema({
+const productSchema: Schema<IProduct> = new mongoose.Schema(
+  {
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     photos: { type: [String], required: true },
@@ -13,14 +13,18 @@ import { IProduct, ProductModel } from "./product.interface";
     stockStatus: { type: Boolean, default: true },
     status: { type: Boolean, default: true },
     categories: {
-        primary: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-        secondary: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-        tertiary: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' }
+      primary: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+      secondary: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+      tertiary: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     },
-    variants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Variant' }],
-}, { timestamps: true,toJSON: {
-  virtuals: true,
-}, });
+    variants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Variant" }],
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
 
-
-export const House = model<IProduct, ProductModel>("House", productSchema);
+export const Product = model<IProduct, ProductModel>("Product", productSchema);

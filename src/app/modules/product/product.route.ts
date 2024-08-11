@@ -1,39 +1,39 @@
 import express from "express";
 import validateRequest from "../../middlewares/validateRequest";
-import { HouseController } from "./product.controller";
 import auth from "../../middlewares/auth";
 import { ENUM_ROLE } from "../../../enums/user";
-import { HouseValidation } from "./house.validation";
+import { ProductController } from "./product.controller";
+import { ProductValidation } from "./product.validation";
 
 const router = express.Router();
 
 // create House
 router.post(
-  "/create-house",
-  auth(ENUM_ROLE.OWNER),
-  validateRequest(HouseValidation.createHouseZodSchema),
-  HouseController.createHouse
+  "/",
+  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  validateRequest(ProductValidation.createProductZodSchema),
+  ProductController.createProduct
 );
 
 // get all House
-router.get("/get-house", HouseController.getAllHouse);
+router.get("/", ProductController.getAllProducts);
 
 // get a House with id
-router.get("/get-single-house/:id", HouseController.getSingleHouse);
+router.get("/:id", ProductController.getSingleProduct);
 
 // update House
 router.patch(
-  "/update-house/:id",
-  auth(ENUM_ROLE.OWNER, ENUM_ROLE.RENTER),
-  validateRequest(HouseValidation.updateHouseZodSchema),
-  HouseController.updateHouse
+  "/:id",
+  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  validateRequest(ProductValidation.updateProductZodSchema),
+  ProductController.updateProduct
 );
 
 // delete House
 router.delete(
-  "/delete-house/:id",
-  auth(ENUM_ROLE.OWNER),
-  HouseController.deleteHouse
+  "/:id",
+  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  ProductController.deleteProduct
 );
 
-export const HouseRoutes = router;
+export const ProductRoute = router;

@@ -1,41 +1,24 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { IHome, IHouseFilters } from "./product.interface";
-import { House } from "./product.model";
-import { User } from "../user/user.model";
+import { SortOrder, Types } from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
-import { IPaginationOptions } from "../../../interfaces/pagination";
-import { SortOrder } from "mongoose";
 import { IGenericResponse } from "../../../interfaces/common";
-import { productSearchableFields } from "./product.constant";
+import { IPaginationOptions } from "../../../interfaces/pagination";
+import { productSearchableFields } from "../product/product.constant";
+import { IProduct, IProductFilter } from "./product.interface";
+import { Product } from "./product.model";
 
-// creat house service
-const createHouseService = async (
-  user: any,
-  homeData: IHome
-): Promise<IHome> => {
-  const { _id } = user;
-
-  const isHouseOwner = await User.findById(_id);
-
-  if (!isHouseOwner) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "You are not an authorized Owner."
-    );
-  }
-  homeData.owner = _id;
-  homeData.availabilityDate = new Date(homeData.availabilityDate);
-  const result = await House.create(homeData);
-
+const createProductService = async (
+  variantData: IProduct
+): Promise<IProduct> => {
+  const result = await Product.create(variantData);
   return result;
 };
 
-// get all house service
-const getAllHouseService = async (
-  filters: IHouseFilters,
+const getAllProductsService = async (
+  filters: IProductFilter,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IHome[]>> => {
+): Promise<IGenericResponse<IProduct[]>> => {
   const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
@@ -52,26 +35,23 @@ const getAllHouseService = async (
       })),
     });
   }
-  if (minPrice && !maxPrice) {
+
+  if (minPrice !== undefined || maxPrice !== undefined) {
     andConditions.push({
-      $and: [{ price: { $gte: Number(minPrice) } }],
-    });
-  }
-  if (!minPrice && maxPrice) {
-    andConditions.push({
-      $and: [{ price: { $lte: Number(maxPrice) } }],
+      price: {
+        ...(minPrice !== undefined && { $gte: minPrice }),
+        ...(maxPrice !== undefined && { $lte: maxPrice }),
+      },
     });
   }
 
-  if (minPrice && maxPrice) {
-    andConditions.push({
-      $and: [{ price: { $gte: Number(minPrice), $lte: Number(maxPrice) } }],
-    });
-  }
   if (Object.keys(filtersData).length) {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
-        [field]: value,
+        [field]: {
+          $regex: value,
+          $options: "i",
+        },
       })),
     });
   }
@@ -83,12 +63,28 @@ const getAllHouseService = async (
 
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const result = await House.find(whereConditions)
+  const result = await Product.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate({
+      path: "categories.primary",
+      select: "name slug",
+    })
+    .populate({
+      path: "categories.secondary",
+      select: "name slug",
+    })
+    .populate({
+      path: "categories.tertiary",
+      select: "name slug",
+    })
+    .populate({
+      path: "variants",
+    })
+    .exec();
 
-  const total = await House.countDocuments();
+  const total = await Product.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -100,65 +96,59 @@ const getAllHouseService = async (
   };
 };
 
-// creat single House service
-const getSingleHouseService = async (id: string): Promise<IHome | null> => {
-  const result = await House.findById(id);
-  if (!result) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Sorry, There is no House with this id."
-    );
-  }
-
+const getSingleProductService = async (
+  id: string
+): Promise<IProduct | null> => {
+  const result = await Product.findById(id)
+    .populate({
+      path: "categories.primary",
+      select: "name slug",
+    })
+    .populate({
+      path: "categories.secondary",
+      select: "name slug",
+    })
+    .populate({
+      path: "categories.tertiary",
+      select: "name slug",
+    })
+    .populate({
+      path: "variants",
+    })
+    .exec();
   return result;
 };
 
-// update House service
-const updateHouseService = async (
+const updateProductService = async (
   id: string,
-  updatedData: Partial<IHome>,
-  user: any
-): Promise<IHome | null> => {
-  const { _id } = user;
-  const house = await House.findOne({ _id: id, owner: _id });
-
-  if (!house) {
-    throw new ApiError(
-      httpStatus.UNAUTHORIZED,
-      "Can't update the house because this is not your house."
-    );
-  }
-
-  const result = await House.findOneAndUpdate({ _id: id }, updatedData, {
+  updatedData: Partial<IProduct>
+): Promise<IProduct | null> => {
+  const result = await Product.findOneAndUpdate({ _id: id }, updatedData, {
     new: true,
+    runValidators: true,
   });
 
-  return result;
-};
-
-// delete house service
-const deleteHouseService = async (
-  id: string,
-  user: any
-): Promise<IHome | null> => {
-  const { _id } = user;
-  const house = await House.findOne({ _id: id, owner: _id });
-
-  if (!house) {
-    throw new ApiError(
-      httpStatus.UNAUTHORIZED,
-      "Can't delete the house because this is not your house."
-    );
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Product not found!");
   }
-  const result = await House.findByIdAndDelete(id);
 
   return result;
 };
 
-export const HouseService = {
-  createHouseService,
-  getAllHouseService,
-  getSingleHouseService,
-  updateHouseService,
-  deleteHouseService,
+const deleteProductService = async (id: string): Promise<IProduct | null> => {
+  const result = await Product.findByIdAndDelete(id);
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Product not found!");
+  }
+
+  return result;
+};
+
+export const ProductService = {
+  createProductService,
+  getAllProductsService,
+  getSingleProductService,
+  updateProductService,
+  deleteProductService,
 };

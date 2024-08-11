@@ -1,7 +1,4 @@
 import { Model, Types } from "mongoose";
-import { IUser } from "../user/user.interface";
-import { ICategory } from "../category/category.interface";
-import { IVariant } from "../variant/variant.interface";
 
 export interface IProduct extends Document {
   _id: Types.ObjectId;
@@ -15,11 +12,11 @@ export interface IProduct extends Document {
   stockStatus: boolean;
   status: boolean;
   categories: {
-      primary: ICategory['_id'];
-      secondary: ICategory['_id'];
-      tertiary: ICategory['_id'];
+    primary: string;
+    secondary: string;
+    tertiary: string;
   };
-  variants: IVariant['_id'][];
+  variants: [string];
 }
 
 export type ProductModel = Model<IProduct, Record<string, unknown>>;
