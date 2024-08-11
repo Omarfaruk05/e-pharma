@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { SortOrder, Types } from "mongoose";
+import { SortOrder } from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
@@ -49,7 +49,7 @@ const getAllProductsService = async (
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
         [field]: {
-          $regex: value,
+          $regex: `^${value}$`,
           $options: "i",
         },
       })),

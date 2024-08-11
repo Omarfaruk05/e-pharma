@@ -5,6 +5,7 @@ import { UserOTPVerificationRoute } from "../modules/userOTPVerifiaction/userOTP
 import { CategoryRoute } from "../modules/category/category.route";
 import { VariantRoute } from "../modules/variant/variant.route";
 import { ProductRoute } from "../modules/product/product.route";
+import { ShippingAddressRoute } from "../modules/shippingAddress/shippingAddress.route";
 const router = express.Router();
 
 const moduleRoutes = [
@@ -31,6 +32,10 @@ const moduleRoutes = [
   {
     path: "/product",
     route: ProductRoute,
+  },
+  {
+    path: "/shippingAddress",
+    route: ShippingAddressRoute,
   },
 ];
 

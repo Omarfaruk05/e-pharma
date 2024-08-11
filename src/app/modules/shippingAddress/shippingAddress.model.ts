@@ -1,5 +1,8 @@
-import mongoose, { Schema } from "mongoose";
-import { IShippingAddress, ShippingAddressModel } from "./shippingAddress.interface";
+import mongoose, { model, Schema } from "mongoose";
+import {
+  IShippingAddress,
+  ShippingAddressModel,
+} from "./shippingAddress.interface";
 
 const shippingAddressSchema: Schema<IShippingAddress> = new mongoose.Schema(
   {
@@ -18,5 +21,7 @@ const shippingAddressSchema: Schema<IShippingAddress> = new mongoose.Schema(
   }
 );
 
-
-export default mongoose.model<IShippingAddress, ShippingAddressModel>('ShippingAddress', shippingAddressSchema);
+export const ShippingAddress = model<IShippingAddress, ShippingAddressModel>(
+  "ShippingAddress",
+  shippingAddressSchema
+);
