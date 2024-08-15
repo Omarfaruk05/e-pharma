@@ -10,7 +10,7 @@ const router = express.Router();
 // create Shipping Address
 router.post(
   "/",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(ShippingAddressValidation.createShippingAddressZodSchema),
   ShippingAddressController.createShippingAddress
 );
@@ -24,7 +24,7 @@ router.get("/:id", ShippingAddressController.getSingleShippingAddress);
 // update Shipping Address
 router.patch(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(ShippingAddressValidation.updateShippingAddressZodSchema),
   ShippingAddressController.updateShippingAddress
 );
@@ -32,7 +32,7 @@ router.patch(
 // delete Shipping Address
 router.delete(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   ShippingAddressController.deleteShippingAddress
 );
 

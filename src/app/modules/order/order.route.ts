@@ -10,7 +10,7 @@ const router = express.Router();
 // create Order
 router.post(
   "/",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.USER),
   validateRequest(OrderValidation.createOrderZodSchema),
   OrderController.createOrder
 );
@@ -24,7 +24,7 @@ router.get("/:id", OrderController.getSingleOrder);
 // update Order
 router.patch(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(OrderValidation.updateOrderZodSchema),
   OrderController.updateOrder
 );
@@ -32,7 +32,7 @@ router.patch(
 // delete Order
 router.delete(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   OrderController.deleteOrder
 );
 

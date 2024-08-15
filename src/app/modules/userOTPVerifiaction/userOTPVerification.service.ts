@@ -25,7 +25,6 @@ const sendOTPVerificationEmail = async ({
             <p> This code <b> expires in 1 hour</b>. </p>`,
     };
     const hashedOTP = await bcrypt.hash(otp, Number(config.bcrypt_sald_round));
-    console.log(hashedOTP);
 
     await User.findByIdAndUpdate({ _id }, { isEmailVerified: false });
 

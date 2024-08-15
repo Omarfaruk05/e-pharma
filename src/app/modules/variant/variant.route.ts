@@ -10,7 +10,7 @@ const router = express.Router();
 // create variant
 router.post(
   "/",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(VariantValidation.createVariantZodSchema),
   VariantController.createVariant
 );
@@ -22,7 +22,7 @@ router.get("/:id", VariantController.getSingleVariant);
 // update variant
 router.patch(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(VariantValidation.updateVariantZodSchema),
   VariantController.updateVariant
 );
@@ -30,7 +30,7 @@ router.patch(
 // delete variant
 router.delete(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   VariantController.deleteVariant
 );
 

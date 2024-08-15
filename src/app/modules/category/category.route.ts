@@ -10,7 +10,7 @@ const router = express.Router();
 // Route to create a new category
 router.post(
   "/",
-  //   auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(CategoryValidation.createCategoryZodSchema),
   CategoryController.createCategory
 );
@@ -22,7 +22,7 @@ router.get("/:id", CategoryController.getSingleCategory);
 // Route to update an existing category
 router.patch(
   "/:id",
-  //   auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(CategoryValidation.updateCategoryZodSchema),
   CategoryController.updateCategory
 );
@@ -30,7 +30,7 @@ router.patch(
 // Route to delete a category by ID
 router.delete(
   "/:id",
-  //   auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   CategoryController.deleteCategory
 );
 

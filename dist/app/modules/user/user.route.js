@@ -21,5 +21,5 @@ router.get("/:id", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM
 //update single user route
 router.patch("/:id", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM_ROLE.ADMIN, user_1.ENUM_ROLE.USER), (0, validateRequest_1.default)(user_validation_1.UserValidation.updateUserZodSchema), user_controller_1.UserController.updateUser);
 // delete single user route
-router.delete("/:id", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM_ROLE.ADMIN, user_1.ENUM_ROLE.USER), user_controller_1.UserController.deleteUser);
+router.delete("/:id", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM_ROLE.ADMIN), user_controller_1.UserController.deleteUser);
 exports.UserRoutes = router;

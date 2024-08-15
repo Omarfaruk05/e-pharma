@@ -7,32 +7,32 @@ import { ProductValidation } from "./product.validation";
 
 const router = express.Router();
 
-// create House
+// create product
 router.post(
   "/",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(ProductValidation.createProductZodSchema),
   ProductController.createProduct
 );
 
-// get all House
+// get all product
 router.get("/", ProductController.getAllProducts);
 
-// get a House with id
+// get a product with id
 router.get("/:id", ProductController.getSingleProduct);
 
-// update House
+// update product
 router.patch(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   validateRequest(ProductValidation.updateProductZodSchema),
   ProductController.updateProduct
 );
 
-// delete House
+// delete product
 router.delete(
   "/:id",
-  // auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
   ProductController.deleteProduct
 );
 
