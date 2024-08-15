@@ -12,8 +12,7 @@ export type VariantModel = Model<IVariant, Record<string, unknown>>;
 
 export type IVariantFilters = {
   searchTerm?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  pirce?: string;
   productName?: string;
   varient?: number;
 };

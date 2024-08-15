@@ -5,21 +5,24 @@ import httpStatus from "http-status";
 import { UserService } from "./user.service";
 import { UserOTPVerificationService } from "../userOTPVerifiaction/userOTPVerification.service";
 import { Types } from "mongoose";
+import pick from "../../../shared/pick";
+import { userFilterableFilds } from "./user.constant";
+import { paginationFields } from "../../constants/pagination";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const userData = req.body;
   const result = await UserService.createUserService(userData);
 
   result.password = "";
-  
 
-  if (result._id){
-    const data:{
+  if (result._id) {
+    const data: {
       _id: Types.ObjectId;
       email: string;
-  } = {_id:result._id, email:result.email}
-    const newResult = await UserOTPVerificationService.sendOTPVerificationEmail(data)
-
+    } = { _id: result._id, email: result.email };
+    const newResult = await UserOTPVerificationService.sendOTPVerificationEmail(
+      data
+    );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -28,12 +31,16 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
       data: newResult,
     });
   }
-
-
 });
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserService.getAllUserService();
+  const filters = pick(req.query, userFilterableFilds);
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const result = await UserService.getAllUsersService(
+    filters,
+    paginationOptions
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

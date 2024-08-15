@@ -3,7 +3,6 @@ import { IGenericErrorMessage } from "../interfaces/error";
 import httpStatus from "http-status";
 
 const handleCastError = (error: mongoose.Error.CastError) => {
-  console.log(error);
   const errors: IGenericErrorMessage[] = [
     {
       path: error.path,

@@ -22,10 +22,7 @@ export type OrderModel = Model<IOrder, Record<string, unknown>>;
 
 export type IOrderFilter = {
   searchTerm?: string;
-  location?: string;
-  breed?: string;
-  price?: number;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  userId?: string;
+  orderStarus?: string;
+  paymentStatus?: string;
 };

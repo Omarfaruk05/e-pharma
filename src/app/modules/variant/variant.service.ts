@@ -1,13 +1,13 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { IVariant, IVariantFilters } from "./variant.interface";
-import { SortOrder, Types } from "mongoose";
+import { IVariant } from "./variant.interface";
+import { SortOrder } from "mongoose";
 import { Variant } from "./variant.model";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
-import { productSearchableFields } from "../product/product.constant";
 import { variantSearchableFields } from "./variant.constant";
+import { IUserFilters } from "../user/user.interface";
 
 const createVariantService = async (
   variantData: IVariant
@@ -17,10 +17,10 @@ const createVariantService = async (
 };
 
 const getAllVariantsService = async (
-  filters: IVariantFilters,
+  filters: IUserFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IVariant[]>> => {
-  const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
+  const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -34,15 +34,6 @@ const getAllVariantsService = async (
           $options: "i",
         },
       })),
-    });
-  }
-
-  if (minPrice !== undefined || maxPrice !== undefined) {
-    andConditions.push({
-      price: {
-        ...(minPrice !== undefined && { $gte: minPrice }),
-        ...(maxPrice !== undefined && { $lte: maxPrice }),
-      },
     });
   }
 

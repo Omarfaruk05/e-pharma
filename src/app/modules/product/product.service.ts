@@ -19,12 +19,13 @@ const getAllProductsService = async (
   filters: IProductFilter,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IProduct[]>> => {
-  const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
+  const { searchTerm, minPrice, maxPrice, primaryId, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
   const andConditions = [];
 
+  // Search term filter
   if (searchTerm) {
     andConditions.push({
       $or: productSearchableFields.map((field) => ({
@@ -36,6 +37,7 @@ const getAllProductsService = async (
     });
   }
 
+  // Price filter
   if (minPrice !== undefined || maxPrice !== undefined) {
     andConditions.push({
       price: {
@@ -45,6 +47,14 @@ const getAllProductsService = async (
     });
   }
 
+  // Primary category filter
+  if (primaryId) {
+    andConditions.push({
+      "categories.primary": primaryId,
+    });
+  }
+
+  // Additional filters
   if (Object.keys(filtersData).length) {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
@@ -56,13 +66,17 @@ const getAllProductsService = async (
     });
   }
 
+  // Sorting conditions
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
 
+  // Applying conditions
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
+
+  // Fetching data
   const result = await Product.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)

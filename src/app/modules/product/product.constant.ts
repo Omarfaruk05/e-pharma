@@ -1,3 +1,10 @@
-export const productSearchableFields = ["name", "variants", "categories"];
+export const productSearchableFields = ["name"];
 
-export const productFilterableFilds = ["searchTerm", "stockStatus", "status"];
+export const productFilterableFilds = [
+  "searchTerm",
+  "stockStatus",
+  "status",
+  "primaryId",
+  "minPrice",
+  "maxPrice",
+];

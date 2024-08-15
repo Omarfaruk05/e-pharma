@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import { SortOrder } from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
@@ -17,12 +17,14 @@ const getAllOrdersService = async (
   filters: IOrderFilter,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IOrder[]>> => {
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, userId, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
   const andConditions = [];
-
+  if (userId) {
+    andConditions.push({ userId: new mongoose.Types.ObjectId(userId) });
+  }
   if (searchTerm) {
     andConditions.push({
       $or: orderSearchableFields.map((field) => ({
@@ -55,7 +57,9 @@ const getAllOrdersService = async (
   const result = await Order.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
-    .limit(limit);
+    .limit(limit)
+    .populate("products.product")
+    .populate("shippingAddress");
 
   const total = await Order.countDocuments(whereConditions);
 

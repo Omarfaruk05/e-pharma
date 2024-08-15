@@ -12,9 +12,9 @@ const userSchema = new Schema<IUser, UserModel>(
     role: {
       type: String,
       enum: [ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER],
-      default:ENUM_ROLE.USER,
+      default: ENUM_ROLE.USER,
     },
-    photo: { type: String },
+    photo: { type: String, default: "" },
     isEmailVerified: { type: Boolean, default: false },
   },
   {

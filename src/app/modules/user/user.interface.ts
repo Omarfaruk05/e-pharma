@@ -2,7 +2,7 @@ import { Model, Types } from "mongoose";
 import { ENUM_ROLE } from "../../../enums/user";
 
 export type IUser = {
-  _id?: Types.ObjectId,
+  _id?: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -37,4 +37,11 @@ export type IVerifiedUser = {
   role: String;
   iat?: number;
   exp?: number;
+};
+
+export type IUserFilters = {
+  searchTerm?: string;
+  pirce?: string;
+  productName?: string;
+  varient?: number;
 };

@@ -23,9 +23,10 @@ export type ProductModel = Model<IProduct, Record<string, unknown>>;
 
 export type IProductFilter = {
   searchTerm?: string;
-  location?: string;
-  breed?: string;
   price?: number;
+  sotckStatus?: boolean;
+  status?: boolean;
+  primaryId?: string;
   category?: string;
   minPrice?: number;
   maxPrice?: number;
