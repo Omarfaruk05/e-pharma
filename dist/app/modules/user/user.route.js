@@ -13,9 +13,7 @@ const user_1 = require("../../../enums/user");
 const router = express_1.default.Router();
 router.post("/create-user", user_controller_1.UserController.createUser);
 //get all users route
-router.get("/", 
-// auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
-user_controller_1.UserController.getAllUsers);
+router.get("/", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM_ROLE.ADMIN, user_1.ENUM_ROLE.USER), user_controller_1.UserController.getAllUsers);
 //get single user route
 router.get("/:id", (0, auth_1.default)(user_1.ENUM_ROLE.SUPER_ADMIN, user_1.ENUM_ROLE.ADMIN, user_1.ENUM_ROLE.USER), user_controller_1.UserController.getSingleUser);
 //update single user route

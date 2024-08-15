@@ -21,7 +21,7 @@ const sendOTPVerificationEmail = async ({
       from: "",
       to: email,
       subject: "Verify Your Email",
-      html: `<p>Enter <b> ${otp} </b> in the app to verify your email address and complete the registration.<p>
+      html: `<p>He, This message from e-pharma. Please enter <b> ${otp} </b> in the app to verify your email address and complete the registration.<p>
             <p> This code <b> expires in 1 hour</b>. </p>`,
     };
     const hashedOTP = await bcrypt.hash(otp, Number(config.bcrypt_sald_round));

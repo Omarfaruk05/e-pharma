@@ -10,7 +10,7 @@ const router = express.Router();
 // create Shipping Address
 router.post(
   "/",
-  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN),
+  auth(ENUM_ROLE.ADMIN, ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.USER),
   validateRequest(ShippingAddressValidation.createShippingAddressZodSchema),
   ShippingAddressController.createShippingAddress
 );

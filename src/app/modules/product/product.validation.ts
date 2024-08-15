@@ -57,9 +57,9 @@ const updateProductZodSchema = z.object({
     status: z.boolean().optional(),
     categories: z
       .object({
-        primary: z.string().uuid().optional(),
-        secondary: z.string().uuid().optional(),
-        tertiary: z.string().uuid().optional(),
+        primary: z.string().optional(),
+        secondary: z.string().optional(),
+        tertiary: z.string().optional(),
       })
       .optional(),
     variants: z.array(variantSchema).optional(),

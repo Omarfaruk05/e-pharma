@@ -31,7 +31,6 @@ const sendOTPVerificationEmail = ({ _id, email, }) => __awaiter(void 0, void 0, 
             <p> This code <b> expires in 1 hour</b>. </p>`,
         };
         const hashedOTP = yield bcrypt_1.default.hash(otp, Number(config_1.default.bcrypt_sald_round));
-        console.log(hashedOTP);
         yield user_model_1.User.findByIdAndUpdate({ _id }, { isEmailVerified: false });
         const newOTPVerification = yield userOTPVerifiaction_model_1.UserOTPVerification.create({
             userId: _id,
