@@ -1,7 +1,5 @@
 import { Model } from "mongoose";
-import { IProduct } from "../product/product.interface";
 import { IShippingAddress } from "../shippingAddress/shippingAddress.interface";
-import { IVariant } from "../variant/variant.interface";
 import { IUser } from "../user/user.interface";
 
 export interface IOrder extends Document {
