@@ -7,9 +7,19 @@ import { IPaginationOptions } from "../../../interfaces/pagination";
 import { Order } from "./order.model";
 import { IOrder, IOrderFilter } from "./order.interface";
 import { orderSearchableFields } from "./order.constant";
+import { Variant } from "../variant/variant.model";
 
-const createOrderService = async (variantData: IOrder): Promise<IOrder> => {
-  const result = await Order.create(variantData);
+const createOrderService = async (orderData: IOrder): Promise<IOrder> => {
+  const products = orderData?.products;
+
+  for (const product of products) {
+    await Variant.findByIdAndUpdate(
+      { _id: product?.variant },
+      { $inc: { quantity: -product?.quantity } }
+    );
+  }
+
+  const result = await Order.create(orderData);
   return result;
 };
 

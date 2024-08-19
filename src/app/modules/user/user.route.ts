@@ -17,11 +17,7 @@ router.get(
 );
 
 //get single user route
-router.get(
-  "/:id",
-  auth(ENUM_ROLE.SUPER_ADMIN, ENUM_ROLE.ADMIN, ENUM_ROLE.USER),
-  UserController.getSingleUser
-);
+router.get("/:id", UserController.getSingleUser);
 
 //update single user route
 router.patch(

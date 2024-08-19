@@ -30,8 +30,13 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const order_model_1 = require("./order.model");
 const order_constant_1 = require("./order.constant");
-const createOrderService = (variantData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.Order.create(variantData);
+const variant_model_1 = require("../variant/variant.model");
+const createOrderService = (orderData) => __awaiter(void 0, void 0, void 0, function* () {
+    const products = orderData === null || orderData === void 0 ? void 0 : orderData.products;
+    for (const product of products) {
+        yield variant_model_1.Variant.findByIdAndUpdate({ _id: product === null || product === void 0 ? void 0 : product.variant }, { $inc: { quantity: -(product === null || product === void 0 ? void 0 : product.quantity) } });
+    }
+    const result = yield order_model_1.Order.create(orderData);
     return result;
 });
 const getAllOrdersService = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {

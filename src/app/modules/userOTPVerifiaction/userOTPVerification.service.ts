@@ -32,7 +32,7 @@ const sendOTPVerificationEmail = async ({
       userId: _id,
       otp: hashedOTP,
       createdAt: Date.now(),
-      expiresAt: Date.now() + 3500000,
+      expiresAt: Date.now() + 60000,
     });
 
     await transporter.sendMail(mailOptions);
